@@ -1,0 +1,60 @@
+# 开发环境配置
+server:
+  port: 8080
+
+spring:
+  # 数据库配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/freshlogistics?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+    druid:
+      # 开发环境使用较小的连接池
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+
+  # Redis配置
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+
+  # Kafka配置
+  kafka:
+    bootstrap-servers: localhost:9092
+
+  # 开发工具配置
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.freshlogistics: DEBUG
+    com.freshlogistics.mapper: DEBUG
+    org.springframework.security: DEBUG
+    org.mybatis: DEBUG
+
+# 自定义配置
+fresh-logistics:
+  jwt:
+    expiration: 86400 # 开发环境1天过期
+  
+  upload:
+    path: D:/temp/uploads/
+  
+  alert:
+    enabled: true
+    # 开发环境降低检查频率
+    temperature-check-interval: 300 # 5分钟
+
+# Swagger在开发环境启用
+springdoc:
+  swagger-ui:
+    enabled: true

@@ -1,0 +1,77 @@
+# 依赖目录
+node_modules/
+frontend/node_modules/
+
+# 构建输出
+dist/
+frontend/dist/
+backend/target/
+*.class
+
+# 日志文件
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 环境变量和配置文件（包含敏感信息）
+.env
+.env.local
+.env.*.local
+*.local
+
+# IDE配置
+.idea/
+.vscode/
+*.swp
+*.swo
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+.DS_Store
+
+# 系统文件
+Thumbs.db
+desktop.ini
+
+# 临时文件
+*.tmp
+*.temp
+*.cache
+.cache/
+
+# Maven
+backend/target/
+backend/.mvn/
+.mvn/
+
+# 数据库备份文件
+*.sql.bak
+*.dump
+
+# 上传文件目录（如果包含用户上传的内容）
+uploads/
+backend/uploads/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# 测试覆盖率
+coverage/
+.nyc_output/
+
+# 其他
+*.tsbuildinfo
+*.pid
+*.seed
+*.pid.lock
+
