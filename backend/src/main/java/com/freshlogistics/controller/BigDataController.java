@@ -1,5 +1,6 @@
 package com.freshlogistics.controller;
 
+import com.freshlogistics.service.HdfsService;
 import com.freshlogistics.service.SensorDataProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,6 +25,9 @@ public class BigDataController {
     @Autowired
     private SensorDataProducer sensorDataProducer;
     
+    @Autowired
+    private HdfsService hdfsService;
+    
     /**
      * 模拟传感器数据采集并发送到Kafka
      * 技术：Kafka消息队列
@@ -47,15 +51,25 @@ public class BigDataController {
                 count++;
             }
             
+            // 刷新HDFS缓冲区，确保数据及时存储
+            hdfsService.flush();
+            
+            // 获取HDFS状态
+            boolean hdfsAvailable = hdfsService.isHdfsAvailable();
+            long hdfsSize = hdfsService.getStorageSize();
+            
             result.put("code", 200);
             result.put("message", "传感器数据采集成功");
             result.put("data", Map.of(
                 "collectedCount", count,
                 "kafkaTopic", "sensor-data",
-                "description", "数据已发送到Kafka消息队列，等待消费者处理并存储到HDFS"
+                "hdfsAvailable", hdfsAvailable,
+                "hdfsStorageSize", hdfsSize,
+                "description", "数据已发送到Kafka消息队列，消费者将自动处理并存储到HDFS"
             ));
             
             System.out.println("✅ [Kafka] 成功采集并发送 " + count + " 条传感器数据");
+            System.out.println("✅ [HDFS] 存储状态: " + (hdfsAvailable ? "可用" : "模拟模式") + ", 存储大小: " + hdfsSize + " bytes");
             
         } catch (Exception e) {
             result.put("code", 500);
@@ -194,9 +208,14 @@ public class BigDataController {
         ));
         
         // HDFS状态
+        boolean hdfsAvailable = hdfsService.isHdfsAvailable();
+        long hdfsSize = hdfsService.getStorageSize();
         status.put("hdfs", Map.of(
-            "status", "依赖已添加",
-            "用途", "传感器历史数据存储"
+            "status", hdfsAvailable ? "已连接" : "模拟模式（本地文件系统）",
+            "available", hdfsAvailable,
+            "storageSize", hdfsSize,
+            "用途", "传感器历史数据存储",
+            "说明", hdfsAvailable ? "真实HDFS连接" : "使用本地文件系统模拟HDFS存储"
         ));
         
         // Spark SQL状态

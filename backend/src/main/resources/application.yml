@@ -24,6 +24,13 @@ spring:
   # Kafka配置
   kafka:
     bootstrap-servers: localhost:9092
+    consumer:
+      group-id: sensor-data-consumer-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      ack-mode: manual
 
   # 开发工具配置
   devtools:
@@ -58,3 +65,11 @@ fresh-logistics:
 springdoc:
   swagger-ui:
     enabled: true
+
+# Hadoop HDFS配置
+hadoop:
+  hdfs:
+    enabled: false  # 设置为true启用真实HDFS，false则使用本地文件系统模拟
+    url: hdfs://localhost:9000
+    user: root
+    base-path: /freshlogistics/sensor-data

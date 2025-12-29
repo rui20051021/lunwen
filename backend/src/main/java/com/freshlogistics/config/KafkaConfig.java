@@ -14,6 +14,7 @@ public class KafkaConfig {
     
     /**
      * 创建传感器数据主题
+     * 用于存储传感器采集的实时数据
      */
     @Bean
     public NewTopic sensorDataTopic() {
@@ -25,6 +26,7 @@ public class KafkaConfig {
     
     /**
      * 创建温度预警主题
+     * 用于存储温度异常预警消息
      */
     @Bean
     public NewTopic temperatureAlertTopic() {
